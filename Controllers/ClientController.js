@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// Get all clients
+// Get all clients + factures
 const getClients = async (req, res, next) => {
   try {
     const count = await prisma.client.count();
@@ -104,7 +104,7 @@ const deleteClient = async (req, res, next) => {
   }
 };
 
-//Get single client
+//Get single client + factures
 const getSingleClient = async (req, res, next) => {
   try {
     const { id } = req.params;
