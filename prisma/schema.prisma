@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model client {
+  idClient        Int       @id @default(autoincrement())
+  Nom             String?   @db.VarChar(255)
+  Prenom          String?   @db.VarChar(255)
+  Adresse         String?   @db.VarChar(255)
+  Ville           String?   @db.VarChar(100)
+  NumeroTelephone String?   @db.VarChar(20)
+  Email           String?   @db.VarChar(255)
+  facture         facture[]
+}
+
+model commande {
+  idCommande     Int             @id @default(autoincrement())
+  NumeroCommande String?         @db.VarChar(50)
+  DateCommande   DateTime?       @db.Date
+  idFournisseur  Int?
+  fournisseur    fournisseur?    @relation(fields: [idFournisseur], references: [idFournisseur], onDelete: NoAction, onUpdate: NoAction, map: "commande_ibfk_1")
+  lignecommande  lignecommande[]
+
+  @@index([idFournisseur], map: "idFournisseur")
+}
+
+model entreprise {
+  idEntreprise      Int       @id @default(autoincrement())
+  NomEntreprise     String?   @db.VarChar(255)
+  SiegeSocial       String?   @db.VarChar(255)
+  DateCreation      DateTime? @db.Date
+  IdentifiantFiscal String?   @db.VarChar(255)
+  Capital           Decimal?  @db.Decimal(15, 2)
+  NombreEmployes    Int?
+  Ville             String?   @db.VarChar(100)
+  Responsable       String?   @db.VarChar(255)
+  NumeroTelephone   String?   @db.VarChar(20)
+  Email             String?   @db.VarChar(255)
+}
+
+model facture {
+  idFacture       Int       @id @default(autoincrement())
+  NumeroFacture   String?   @db.VarChar(50)
+  DateFacturation DateTime? @db.Date
+  idClient        Int?
+  client          client?   @relation(fields: [idClient], references: [idClient], onDelete: NoAction, onUpdate: NoAction, map: "facture_ibfk_1")
+
+  @@index([idClient], map: "idClient")
+}
+
+model fournisseur {
+  idFournisseur   Int        @id @default(autoincrement())
+  Nom             String?    @db.VarChar(255)
+  Adresse         String?    @db.VarChar(255)
+  Ville           String?    @db.VarChar(100)
+  NumeroTelephone String?    @db.VarChar(20)
+  Email           String?    @db.VarChar(255)
+  commande        commande[]
+}
+
+model lignecommande {
+  idLigneCommande Int       @id @default(autoincrement())
+  idCommande      Int?
+  idProduit       Int?
+  Quantite        Int?
+  commande        commande? @relation(fields: [idCommande], references: [idCommande], onDelete: NoAction, onUpdate: NoAction, map: "lignecommande_ibfk_1")
+  produit         produit?  @relation(fields: [idProduit], references: [idProduit], onDelete: NoAction, onUpdate: NoAction, map: "lignecommande_ibfk_2")
+
+  @@index([idCommande], map: "idCommande")
+  @@index([idProduit], map: "idProduit")
+}
+
+model produit {
+  idProduit     Int             @id @default(autoincrement())
+  NomProduit    String?         @db.VarChar(255)
+  PrixAchat     Decimal?        @db.Decimal(15, 2)
+  PrixVente     Decimal?        @db.Decimal(15, 2)
+  TauxMarge     Decimal?        @db.Decimal(5, 2)
+  Dimension     String?         @db.VarChar(100)
+  Taille        String?         @db.VarChar(50)
+  lignecommande lignecommande[]
+}
