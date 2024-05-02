@@ -2,7 +2,7 @@ import express from "express";
 import {
   getClients,
   addClient,
-  updateClient, 
+  updateClient,
   deleteClient,
   getSingleClient,
 } from "../Controllers/clientController.js";

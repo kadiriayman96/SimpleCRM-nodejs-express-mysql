@@ -2,6 +2,7 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import clientRouter from "./routers/clientRouter.js";
 import factureRouter from "./routers/factureRouter.js";
+import fournisseurRouter from "./routers/fournisseurRouter.js";
 
 const app = express();
 const prisma = new PrismaClient();
@@ -10,6 +11,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use("/api/clients", clientRouter);
 app.use("/api/factures", factureRouter);
+app.use("/api/fournisseurs", fournisseurRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
