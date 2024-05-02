@@ -1,31 +1,19 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-import {
-  getClients,
-  addClient,
-  updateClient,
-  deleteClient,
-  getSingleClient,
-} from "./Controllers/clientController.js";
+import clientRouter from "./routers/clientRouter.js";
 
 const app = express();
 const prisma = new PrismaClient();
 const PORT = 3000;
 
 app.use(express.json());
-
-app.route("/api/clients").get(getClients).post(addClient);
-app
-  .route("/api/clients/:id")
-  .put(updateClient)
-  .delete(deleteClient)
-  .get(getSingleClient);
+app.use("/api/clients", clientRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res
     .status(500)
-    .send("Un probleme est survenu! Veuillez contacter l'administrateur.");
+    .send("Un problème est survenu! Veuillez contacter l'administrateur.");
 });
 
 const server = app.listen(PORT, () => {
