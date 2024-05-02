@@ -5,10 +5,16 @@ const prisma = new PrismaClient();
 const getClients = async (req, res, next) => {
   try {
     const count = await prisma.client.count();
+
     if (count === 0) {
       return res.status(404).json({ error: "Ajouter au moins un client!" });
     }
-    const clients = await prisma.client.findMany();
+    const clients = await prisma.client.findMany({
+      include: {
+        facture: true,
+      },
+    });
+
     return res.status(200).json(clients);
   } catch (error) {
     next(error);
@@ -31,7 +37,7 @@ const addClient = async (req, res, next) => {
     });
     return res
       .status(201)
-      .json({ success: "Le client a été ajouté avec succes" });
+      .json({ success: "Le client a été ajouté avec succes", client });
   } catch (error) {
     next(error);
   }
@@ -65,7 +71,7 @@ const updateClient = async (req, res, next) => {
     });
     return res
       .status(200)
-      .json({ success: "Le client a été modifié avec succes" });
+      .json({ success: "Le client a été modifié avec succes", updatedClient });
   } catch (error) {
     next(error);
   }
@@ -92,7 +98,7 @@ const deleteClient = async (req, res, next) => {
     });
     return res
       .status(200)
-      .json({ success: "Le client a été supprime avec succes" });
+      .json({ success: "Le client a été supprime avec succes", deletedClient });
   } catch (error) {
     next(error);
   }
@@ -105,6 +111,9 @@ const getSingleClient = async (req, res, next) => {
     const client = await prisma.client.findUnique({
       where: {
         idClient: parseInt(id),
+      },
+      include: {
+        facture: true,
       },
     });
     if (!client) {
