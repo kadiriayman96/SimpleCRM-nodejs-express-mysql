@@ -47,7 +47,6 @@ const addClient = async (req, res, next) => {
 const updateClient = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { Nom, Prenom, Adresse, Ville, NumeroTelephone, Email } = req.body;
     const existingClient = await prisma.client.findUnique({
       where: {
         idClient: parseInt(id),
@@ -56,6 +55,8 @@ const updateClient = async (req, res, next) => {
     if (!existingClient) {
       return res.status(404).json({ error: "Le client n'existe pas" });
     }
+
+    const { Nom, Prenom, Adresse, Ville, NumeroTelephone, Email } = req.body;
     const updatedClient = await prisma.client.update({
       where: {
         idClient: parseInt(id),

@@ -5,7 +5,7 @@ import {
   updateFacture,
   deleteFacture,
   getSingleFacture,
-} from "../Controllers/facturesController.js";
+} from "../controllers/facturesController.js";
 
 const factureRouter = express.Router();
 

@@ -5,7 +5,7 @@ import {
   updateFournisseur,
   deleteFournisseur,
   getSingleFournisseur,
-} from "../Controllers/fournisseurController.js";
+} from "../controllers/fournisseurController.js";
 
 const fournisseurRouter = express.Router();
 

@@ -49,7 +49,6 @@ const addFournisseur = async (req, res, next) => {
 const updateFournisseur = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { Nom, Adresse, Ville, NumeroTelephone, Email } = req.body;
     const existingFournisseur = await prisma.fournisseur.findUnique({
       where: {
         idFournisseur: parseInt(id),
@@ -58,6 +57,8 @@ const updateFournisseur = async (req, res, next) => {
     if (!existingFournisseur) {
       return res.status(404).json({ error: "Le fournisseur n'existe pas" });
     }
+
+    const { Nom, Adresse, Ville, NumeroTelephone, Email } = req.body;
     const updatedFournisseur = await prisma.fournisseur.update({
       where: {
         idFournisseur: parseInt(id),

@@ -47,7 +47,6 @@ const addFacture = async (req, res, next) => {
 const updateFacture = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { NumeroFacture, DateFacturation, idClient } = req.body;
 
     const existFacture = await prisma.facture.findUnique({
       where: {
@@ -60,6 +59,7 @@ const updateFacture = async (req, res, next) => {
         .json({ error: "La facture à modifier n'existe pas" });
     }
 
+    const { NumeroFacture, DateFacturation, idClient } = req.body;
     const updatedFacture = await prisma.facture.update({
       where: {
         idFacture: parseInt(id),
