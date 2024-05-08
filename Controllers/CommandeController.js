@@ -135,10 +135,28 @@ const getSingleCommande = async (req, res, next) => {
   }
 };
 
+// nombre de commande d'un fournisseur fournit par req.parms
+
+const getCommandesparFournisseur = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const commande = await prisma.commande.aggregate({
+      where: {
+        idFournisseur: parseInt(id),
+      },
+      _count: true,
+    });
+    return res.status(200).json(commande);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getCommandes,
   addCommande,
   updateCommande,
   deleteCommande,
   getSingleCommande,
+  getCommandesparFournisseur,
 };

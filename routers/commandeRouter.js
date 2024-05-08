@@ -5,6 +5,7 @@ import {
   updateCommande,
   deleteCommande,
   getSingleCommande,
+  getCommandesparFournisseur,
 } from "../controllers/commandeController.js";
 
 const commandeRouter = express.Router();
@@ -15,5 +16,6 @@ commandeRouter
   .put(updateCommande)
   .delete(deleteCommande)
   .get(getSingleCommande);
+commandeRouter.get("/getbyfour/:id", getCommandesparFournisseur);
 
 export default commandeRouter;
